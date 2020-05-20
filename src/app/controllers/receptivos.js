@@ -12,6 +12,16 @@ router.get('/', async(req, res) => {
   }
 });
 
+// Exibir somente um registro
+router.get('/exibir/:receptivoId', async (req, res) => {
+  try {
+    const receptivo = await Receptivos.findById(req.params.receptivoId);
+    return res.send({ receptivo });
+  } catch (err) {
+    return res.status(400).send({ error: 'Erro ao exibir receptivo: ' + err })
+  };
+});
+
 // Cadastrar novo receptivos
 router.post('/registrar', async(req, res) => {
   try {    
