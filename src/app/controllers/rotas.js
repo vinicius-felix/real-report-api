@@ -12,7 +12,7 @@ router.post('/registrar', async(req, res) => {
     const rotas = await Rotas.create(req.body);
     return res.send({ rotas });
   } catch(err) {
-    return res.status(400).send({ error: 'Erro ao registrar nova rota!'});
+    return res.status(400).send({ error: 'Erro ao registrar nova rota!', err});
   }
 });
 
