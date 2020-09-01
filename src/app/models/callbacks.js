@@ -13,7 +13,7 @@ const callbacksSchema = new mongoose.Schema({
   },
 
   servidor: {
-    type: Number,
+    type: String,
     require: true,
   },
 
@@ -29,12 +29,12 @@ const callbacksSchema = new mongoose.Schema({
 
   dac: {
     type: String,
-    require: true,
+    require: false,
   },
 
   cockpit: {
     type: String,
-    require: true,
+    require: false,
   },
 
   carteira: {

@@ -13,7 +13,7 @@ const receptivosSchema = new mongoose.Schema({
   },
 
   servidor: {
-    type: Number,
+    type: String,
     require: true,
   },
 
@@ -29,12 +29,12 @@ const receptivosSchema = new mongoose.Schema({
 
   dac: {
     type: String,
-    require: true,
+    require: false,
   },
 
   cockpit: {
     type: String,
-    require: true,
+    require: false,
   },
 
   carteira: {

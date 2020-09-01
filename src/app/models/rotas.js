@@ -8,7 +8,7 @@ const rotasSchema = new mongoose.Schema({
   },
 
   ambiente: {
-    type: Number,
+    type: String,
     required: true,
   },
 
