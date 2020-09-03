@@ -12,6 +12,16 @@ router.get('/', async(req, res) => {
   }
 });
 
+// Exibir somente um registro
+router.get('/exibir/:callbackId', async (req, res) => {
+  try {
+    const callbacks = await Callbacks.findById(req.params.callbackId);
+    return res.send({ callbacks });
+  } catch (err) {
+    return res.status(400).send({ error: 'Erro ao exibir callback: ' + err })
+  };
+});
+
 // Cadastrar novo callback
 router.post('/registrar', async(req, res) => {
   try {    
@@ -25,8 +35,8 @@ router.post('/registrar', async(req, res) => {
 // Atualizar registro existente
 router.put('/atualiza/:callbackId', async (req, res) => {
   try {
-    const {description} = req.body;
-    const callback = await Callbacks.findByIdAndUpdate(req.params.callbackId, { description });
+    const description = req.body;
+    const callback = await Callbacks.findByIdAndUpdate(req.params.callbackId, description);
     return res.send({ callback });
   } catch (err) {
     return res.status(400).send({ error: 'Não foi possivel atualizar o callback! ' + err });

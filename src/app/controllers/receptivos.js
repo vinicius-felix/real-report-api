@@ -35,8 +35,8 @@ router.post('/registrar', async(req, res) => {
 // Atualizar registro existente
 router.put('/atualiza/:receptivoId', async (req, res) => {
   try {
-    const {description} = req.body;
-    const receptivo = await Receptivos.findByIdAndUpdate(req.params.receptivoId, { description });
+    const description = req.body;
+    const receptivo = await Receptivos.findByIdAndUpdate(req.params.receptivoId, description);
     return res.send({ receptivo });
   } catch (err) {
     return res.status(400).send({ error: 'Não foi possivel atualizar o receptivo! ' + err });
