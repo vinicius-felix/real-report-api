@@ -65,6 +65,10 @@ router.get('/', async(req, res) => {
 				custo.push( hora[i][hora[i].length-1] );    
 			}
 			
+			while(custo.length < 14){
+				custo.push('0,00');
+			}
+
 			res.status(200).send({ custo });
 			await browser.close();
 		
