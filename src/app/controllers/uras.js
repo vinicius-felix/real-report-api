@@ -10,11 +10,9 @@ router.get('/', async(req, res) => {
 		
 			let data, custo = [];
 
-			const browser = await puppeteer.launch({ args: [ '--ignore-certificate-errors', '--disable-dev-shm-usage' ], headless: false });
+			const browser = await puppeteer.launch({ args: [ '--ignore-certificate-errors', '--disable-dev-shm-usage' ] });
 
 				let page = await browser.newPage();
-
-				console.log('Logando')
 
 				await page.goto('http://192.168.170.21:8080/rj/login.html', { timeout: 0 });
 		
@@ -25,8 +23,6 @@ router.get('/', async(req, res) => {
 		
 				await page.waitForNavigation();
 				
-				console.log('Logado')
-
 				await page.goto('http://192.168.170.21:8080/rj/custos-ura.html');
 			
 			for(let i = 7; i < 21; i++){
@@ -39,11 +35,8 @@ router.get('/', async(req, res) => {
 				const selector = 'button[class="btn btn-primary"]';
 				await page.evaluate((selector) => document.querySelector(selector).click(), selector); 
 		
-				//await page.waitForNavigation();
 				await page.waitForSelector('div[class="card-content"]');
 				
-				console.log('buscando dados')
-
 				data = await page.evaluate(() => {
 					return document.querySelector('div[class="card-content"]').innerText;
 				});
@@ -56,12 +49,10 @@ router.get('/', async(req, res) => {
 					custo.push('0,00');
 				}//if-else
 
-				console.log('cust', custo);
 				await page.evaluate(() => ( document.querySelector('input[name="horas"]').value = '' ));
 				
 			}//for
 
-			console.log('finalizado')
 			await page.close();
 			await browser.close();
 			res.status(200).send({ custo });

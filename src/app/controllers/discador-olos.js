@@ -52,7 +52,7 @@ router.get('/', async(req, res) => {
 			let query = await page.evaluate(() => {
 				return document.querySelector('div[id="PageContent_tabela1_resultado"]').innerText;
 			});
-		
+
 			query = query.split('\n');
 		
 			let hora = [], custo = []
