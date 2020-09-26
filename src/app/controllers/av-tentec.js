@@ -7,6 +7,9 @@ router.get('/', async(req, res) => {
 	try{
 
 		(async () => {
+
+			console.log('Acessando agente virtual Tentec');
+
 		  const urlBrow = 'https://sip.tentec.com.br/painel/call_history.php';
 
 		  const browser = await puppeteer.launch({ args: [ '--ignore-certificate-errors' ] });

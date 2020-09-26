@@ -5,7 +5,10 @@ const puppeteer = require('puppeteer');
 
 router.get('/', async(req, res) => {
   try{
+
     (async () => {
+
+			console.log('Acessando baldussi');
 
       let custo = []
     
@@ -57,8 +60,7 @@ router.get('/', async(req, res) => {
         let getCost = data.substring( data.lastIndexOf("R$"), data.length );
         getCost = getCost.includes('Nenhum') ? 'R$ 0,00' : getCost;
 
-        //custo.push(Object.assign({ custo: getCost, hora: i + 'h até ' + (i+1) + 'h' }));
-        custo.push(getCost);        
+        custo.push(getCost);
     
       }
 

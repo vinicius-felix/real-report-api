@@ -7,6 +7,8 @@ router.get('/', async(req, res) => {
 	try{
 
 		(async () => {
+
+			console.log('Acessando URAs');
 		
 			let data, custo = [];
 

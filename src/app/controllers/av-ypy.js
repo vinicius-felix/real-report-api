@@ -7,6 +7,9 @@ router.get('/', async(req, res) => {
 	try{
 
 		(async () => {
+
+			console.log('Acessando agente virtual Ypy');
+
 		  const urlBrow = 'https://sip.ypytecnologia.com.br/accounts/login/';
 
 		  const browser = await puppeteer.launch();

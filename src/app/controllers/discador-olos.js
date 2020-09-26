@@ -19,6 +19,8 @@ router.get('/', async(req, res) => {
 
 		(async () => {
 
+			console.log('Acessando Olos');
+
 			console.clear();
 		
 			const urlBrow = 'http://192.168.200.250/Olos/Login.aspx';

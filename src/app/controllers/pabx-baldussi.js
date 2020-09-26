@@ -9,6 +9,8 @@ router.get('/', async(req, res) => {
 
 		(async () => {
 
+			console.log('Acessando pabx Baldussi');
+
 		  const urlBrow = 'http://187.60.48.201:8080/SipPulsePortal/pages/login/login.jsf';
 
 		  const browser = await puppeteer.launch();

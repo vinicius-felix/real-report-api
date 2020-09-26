@@ -8,6 +8,8 @@ router.get('/', async(req, res) => {
 
 		(async () => {
 
+			console.log('Acessando amb 2');
+
 			const urlBrow = 'http://192.168.200.83';
 		
 			const browser = await puppeteer.launch({ headless: true });
