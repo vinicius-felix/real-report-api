@@ -40,7 +40,7 @@ router.get('/', async(req, res) => {
 		  });
 		  
 		  let custo = content[content.length-1].split('\n');
-		  custo = Number.parseFloat(custo[custo.length-1].trim().split(':').join('').split('R$').join('')).toFixed(2);
+		  custo = custo[custo.length-1].trim().split(':').join('').split('R$').join('');
 		  
 		  await browser.close();
 

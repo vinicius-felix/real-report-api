@@ -8,7 +8,7 @@ router.get('/', async(req, res) => {
 
     (async () => {
 
-			console.log('Acessando baldussi');
+			console.log('Acessando baldussi!');
 
       let custo = []
     
@@ -35,7 +35,7 @@ router.get('/', async(req, res) => {
       
       await page.goto('https://discador.baldussi.com.br/discador/chamadas.php', { waitUntil: 'load' });
       
-      for(let i = 7; i < 21; i++) {
+      for(let i = 7; i < 9; i++) {
         await page.waitForSelector('input[name="horaInicial"]', { timeout: 0 } );
     
         await page.evaluate(() => ( document.querySelector('input[name="horaInicial"]').value = '' ));
@@ -65,6 +65,7 @@ router.get('/', async(req, res) => {
       }
 
       res.status(200).send({ custo });
+      console.log('Finalizado')
       
       await browser.close();
       

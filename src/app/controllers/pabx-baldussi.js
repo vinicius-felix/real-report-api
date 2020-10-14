@@ -39,7 +39,7 @@ router.get('/', async(req, res) => {
 		    return tables.map((table) => table.textContent.trim());
 		  });
 
-		  let custo = Number.parseFloat(content[content.length-1]).toFixed(2);
+		  let custo = content[content.length-1];
 		  
 		  await browser.close();
 
