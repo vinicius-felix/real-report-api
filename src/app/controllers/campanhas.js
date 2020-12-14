@@ -28,7 +28,7 @@ router.get('/:ambiente', async(req, res) => {
 
 			console.log('Campanhas - Acessando', req.params.ambiente);
 		
-			const browser = await puppeteer.launch({ headless: false });
+			const browser = await puppeteer.launch({ headless: true });
 		
 			let page = await browser.newPage();
 		
@@ -48,16 +48,14 @@ router.get('/:ambiente', async(req, res) => {
 
 			await page.waitForSelector('table[id="table_campanha"]');
 
-			// let queryAllCampaigns = await page.evaluate(() => {
-			// 	return document.querySelector('table[class="table table-striped table-hover table-border nowrap highlight dataTable"]');
-			// });
-
 			let queryAllCampaigns = await page.evaluate(() => {
-				let divs = [...document.querySelectorAll('table[class="table table-striped table-hover table-border nowrap highlight dataTable"]')];
-		    return divs.map((div) => div.textContent.length);
+				return document.querySelectorAll('[class="campaign-name-modal sorting_1"]');
 			});
 
-			console.log('listando', queryAllCampaigns)
+			// let queryAllCampaigns = await page.evaluate(() => {
+			// 	let divs = [...document.querySelectorAll('[class="campaign-name-modal sorting_1"]')];
+		    //    return divs.map((div) => div.textContent.length);
+			// });
 
 			//Ir para pagina de campanhas
 			//Analisar campanhas ativas
@@ -67,13 +65,13 @@ router.get('/:ambiente', async(req, res) => {
 	
 			// let query = await page.evaluate(() => {
 			// 	let divs = [...document.querySelectorAll('label[class="route_label personalized_checkbox checked ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"]')];
-		  //   return divs.map((div) => div.textContent.trim());
+		    // return divs.map((div) => div.textContent.trim());
 			// });
 			
 			// let campanha = verificarBinagem(query) + ' / ' + verificarReconhecimento(query);
 
 			await browser.close();
-			res.status(200).send('OK');
+			res.status(200).send(camps);
 	
 		})();
 

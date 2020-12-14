@@ -8,12 +8,12 @@ router.get('/:hora', async(req, res) => {
 
 		(async () => {
 
-			console.log('Acessando URAs');
+			console.log('\nAcessando URA');
 
 			const hora = req.params.hora;
 			let data, custo = [];
 
-			const browser = await puppeteer.launch({ args: [ '--ignore-certificate-errors', '--disable-dev-shm-usage' ] });
+			const browser = await puppeteer.launch({ headless: true, args: [ '--ignore-certificate-errors', '--disable-dev-shm-usage' ] });
 
 			let page = await browser.newPage();
 
@@ -28,26 +28,24 @@ router.get('/:hora', async(req, res) => {
 			
 			await page.goto('http://192.168.170.21:8080/rj/custos-ura.html');
 			
-				const selector_i = 'i[class="ft-plus"]';
-				await page.evaluate((selector_i) => document.querySelector(selector_i).click(), selector_i); 
+			const selector_i = 'i[class="ft-plus"]';
+			await page.evaluate((selector_i) => document.querySelector(selector_i).click(), selector_i); 
 
-				await page.type('#horas', hora.toString());
+			await page.type('#horas', hora.toString());
 
-				const selector = 'button[class="btn btn-primary"]';
-				await page.evaluate((selector) => document.querySelector(selector).click(), selector); 
+			const selector = 'button[class="btn btn-primary"]';
+			await page.evaluate((selector) => document.querySelector(selector).click(), selector); 
 
-				await page.waitForSelector('div[class="card-content"]');
+			await page.waitForSelector('div[class="card-content"]');
 
-				data = await page.evaluate(() => {
-					return document.querySelector('div[class="col-md-4 col-sm-12"]').innerText
-					.split('\n')[0]
-					.split('R$')[1]
-					.trim();
-				});
+			data = await page.evaluate(() => {
+				return document.querySelector('div[class="col-md-4 col-sm-12"]').innerText
+				.split('\n')[0]
+				.split('R$')[1]
+				.trim();
+			});
 
-				custo.push(data);
-
-				await page.evaluate(() => ( document.querySelector('input[name="horas"]').value = '' ));
+			custo.push(data);
 
 			await page.close();
 			await browser.close();
@@ -56,6 +54,8 @@ router.get('/:hora', async(req, res) => {
 		})();
 
   } catch(err) {
+	await page.close();
+	await browser.close();
   	return res.status(400).send({ error: 'Erro:' + err });
   }
 });

@@ -1,11 +1,13 @@
 # Dockerfile app
 FROM node:10.11
 
-RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
+RUN mkdir /home/node/app
 
 WORKDIR /home/node/app
 
 ADD package*.json ./
+
+RUN ls -lha
 
 RUN npm install
 
@@ -15,6 +17,6 @@ COPY --chown=node:node . .
 
 USER node
 
-EXPOSE 3000
+EXPOSE 3001
 
 CMD ["npm", "start"]

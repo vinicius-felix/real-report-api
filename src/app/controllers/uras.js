@@ -25,7 +25,7 @@ router.get('/', async(req, res) => {
 	
 			await page.waitForNavigation();
 			
-			await page.goto('http://192.168.170.21:8080/rj/custos-ura.html');
+			await page.goto('http://192.168.170.21:8080/rj/custos-ura.html', { timeout: 0 });
 			
 			for(let i = 7; i < 21; i++){
 

@@ -19,9 +19,7 @@ router.get('/', async(req, res) => {
 
 		(async () => {
 
-			console.log('Acessando Olos');
-
-			console.clear();
+			console.log('\nAcessando Olos');
 		
 			const urlBrow = 'http://192.168.200.250/Olos/Login.aspx';
 		
@@ -51,33 +49,57 @@ router.get('/', async(req, res) => {
 				'&city=&cnl=&state=&DispositionId=&Disposition=&dispositionType=&addCampaignId=-1'
 			);
 			
-			let query = await page.evaluate(() => {
-				return document.querySelector('div[id="PageContent_tabela1_resultado"]').innerText;
+			// let query = await page.evaluate(() => {
+			// 	return document.querySelector('div[id="PageContent_tabela1_resultado"]').innerText;
+			// });
+
+			// query = query.split('\n');
+		
+			// let hora = [], custo = []
+		
+			// for(let i=0; i<query.length; i++){ 
+			// 	hora.push(query[i].split('\t'))
+			// }
+		
+			// for(let i = 2; i < hora.length-1; i++){
+			// 	custo.push( hora[i][hora[i].length-1] );    
+			// }
+			
+			// while(custo.length < 14){
+			// 	custo.push('0,00');
+			// }
+
+			let trs = await page.evaluate(() => {
+  		    	let tables = [...document.querySelectorAll('tr[class="lineTab"]')];
+			    return tables.map((table) => JSON.stringify(table.textContent.trim()));
 			});
 
-			query = query.split('\n');
-		
-			let hora = [], custo = []
-		
-			for(let i=0; i<query.length; i++){ 
-				hora.push(query[i].split('\t'))
-			}
-		
-			for(let i = 2; i < hora.length-1; i++){
-				custo.push( hora[i][hora[i].length-1] );    
-			}
+			let custo = [];
 			
+			trs.forEach( (tr, i) => {
+				if(i > 0){
+			    	let row = tr.split('\\n');
+			    	let newRow = [row[0].split('"').join(''), row[row.length-1]];
+
+				    if(parseInt(newRow[0].split(':00')) >= 7)
+				        custo.push(newRow[1].split('"').join('').trim());			        
+			    }
+			})
+
 			while(custo.length < 14){
 				custo.push('0,00');
 			}
 
-			res.status(200).send({ custo });
+			await page.close();
 			await browser.close();
+			res.status(200).send({ custo });			
 		
 		})();
 		
   } catch(err) {
-  	return res.status(400).send({ error: 'Erro: ' + err });
+	await page.close();
+	await browser.close();
+  	return res.status(400).send({ error: 'Erro: ' + err, custo: '0,00' });
   }
 });
 

@@ -8,7 +8,7 @@ router.get('/', async(req, res) => {
 
 		(async () => {
 
-			console.log('Acessando agente virtual Ypy');
+			console.log('\nAcessando agente virtual Ypy');
 
 		  const urlBrow = 'https://sip.ypytecnologia.com.br/accounts/login/';
 
@@ -42,14 +42,16 @@ router.get('/', async(req, res) => {
 		  let custo = content[content.length-1].split('\n');
 		  custo = custo[custo.length-1].trim().split(':').join('').split('R$').join('');
 		  
+		  await page.close();
 		  await browser.close();
-
 		  res.status(200).send({ custo });
 		  
 		})();
 
   } catch(err) {
-  	return res.status(400).send({ error: 'Erro: ' + err });
+	await page.close();
+	await browser.close();
+  	return res.status(400).send({ error: 'Erro: ' + err, custo: 0 });
   }
 });
 

@@ -10,7 +10,8 @@ router.get('/:ambiente/:horaInicial/:horaFinal', async(req, res) => {
 
 			const urlBrow = 'http://' + req.params.ambiente, horaInicial = req.params.horaInicial, horaFinal = req.params.horaFinal
 
-			console.log('Acessando', req.params.ambiente);
+			console.log('\nAcessando', req.params.ambiente);
+			console.log('Custo das', horaInicial, 'até as', horaFinal)
 		
 			const browser = await puppeteer.launch({ headless: true });
 		
@@ -28,34 +29,37 @@ router.get('/:ambiente/:horaInicial/:horaFinal', async(req, res) => {
 			
 			await page.waitForNavigation();
 		
-				await page.goto(urlBrow + '/billing_report/trunk_calls_report_form');
-		
-				await page.waitForSelector('#date_start_hour');
-		
-				await page.select('#date_start_hour', horaInicial < 10 ? ('0'+horaInicial) : horaInicial.toString());
-				await page.select('#date_start_minute', '01');
-		
-				await page.select('#date_finish_hour', horaFinal < 10 ? ('0'+horaFinal) : (horaFinal).toString());
-				await page.select('#date_finish_minute', '00');
-		
-				await page.select('#trunk_id', '');    
-		
-				await page.click('a[class="button_16 button_ok_16"]');
-		
-				await page.waitForSelector('th[class="border_bottom_radius_right', );
-		
-				let query = await page.evaluate(() => {
-					return document.querySelector('th[class="border_bottom_radius_right').innerText;
-				});
-				
-				await browser.close();
-				let custo = query.split('R$').join('').trim();
-				res.status(200).send({ custo });
+			await page.goto(urlBrow + '/billing_report/trunk_calls_report_form');
+	
+			await page.waitForSelector('#date_start_hour');
+	
+			await page.select('#date_start_hour', horaInicial < 10 ? ('0'+horaInicial) : horaInicial.toString());
+			await page.select('#date_start_minute', '01');
+	
+			await page.select('#date_finish_hour', horaFinal < 10 ? ('0'+horaFinal) : (horaFinal).toString());
+			await page.select('#date_finish_minute', '00');
+	
+			await page.select('#trunk_id', '');    
+	
+			await page.click('a[class="button_16 button_ok_16"]');
+	
+			await page.waitForSelector('th[class="border_bottom_radius_right', );
+	
+			let query = await page.evaluate(() => {
+				return document.querySelector('th[class="border_bottom_radius_right').innerText;
+			});
+			
+			await page.close();
+			await browser.close();
+			let custo = query.split('R$').join('').trim();
+			res.status(200).send({ custo });
 		
 		})();
 
   } catch(err) {
-  	return res.status(400).send({ error: 'Erro: ' + err });
+  	await page.close();
+	await browser.close();
+  	return res.status(400).send({ error: 'Erro: ' + err, custo: 0 });
   }
 });
 
